@@ -1,0 +1,86 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.fernandocejas.frodo'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion baseCompileSdkVersion
+    buildToolsVersion baseBuildToolsVersion
+
+    defaultConfig {
+        applicationId basePackageName
+        minSdkVersion baseMinSdkVersion
+        targetSdkVersion baseTargetSdkVersion
+        versionCode baseVersionCode
+        versionName baseVersionName
+        testInstrumentationRunner baseTestInstrumentationRunner
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+
+    def presentationDependencies = rootProject.ext.presentationDependencies
+    def testDependencies = rootProject.ext.dataTestDependencies
+
+    def dataDependencies = rootProject.ext.dataDependencies
+
+    // LOCAL BINARY DEPENDENCY
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    // TEST-ONLY DEPENDENCIES
+    testCompile testDependencies.junit
+    // MODULE DEPENDENCY
+
+    // REMOTE BINARY DEPENDENCIES
+    // Use - Dependency Injection support
+    apt presentationDependencies.daggerCompiler
+    compile presentationDependencies.dagger
+    compile presentationDependencies.butterKnife
+    // Use - Android Support Library support
+    compile presentationDependencies.supportCardView
+    compile presentationDependencies.supportRecyclerView
+    compile presentationDependencies.supportDesign
+    compile presentationDependencies.supportAppCompatV7
+    // Use - Reactive Approach support
+    compile presentationDependencies.rxJava
+    compile presentationDependencies.rxAndroid
+    provided presentationDependencies.javaxAnnotation
+
+    // Use - Rest API support
+    compile dataDependencies.retrofit
+    compile dataDependencies.retrofitConverterGson
+    compile (dataDependencies.retrofitConverterSimpleXml) {
+        exclude module: 'stax-api'
+    }
+    compile dataDependencies.retrofitRxJavaAdapter
+    compile dataDependencies.okHttp
+
+    // Use - Data & network flow analytics/debugging support
+    compile 'com.facebook.stetho:stetho:1.3.1'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.3.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
+    // DEVELOPMENT-ONLY DEPENDENCIES
+    compile developmentDependencies.leakCanary
+}
