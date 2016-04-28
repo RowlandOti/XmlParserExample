@@ -3,6 +3,8 @@ package com.rowland.xmlparser.presentation.downloadfeature.view.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +12,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.app.Activity;
 
 import com.rowland.xmlparser.R;
 import com.rowland.xmlparser.presentation.downloadfeature.model.DownloadModel;
 import com.rowland.xmlparser.presentation.downloadfeature.presenter.DownloadDetailsPresenter;
 import com.rowland.xmlparser.presentation.downloadfeature.view.IDownloadDetailsView;
+import com.rowland.xmlparser.presentation.downloadfeature.view.activity.DownloadDetailsActivity;
 import com.rowland.xmlparser.presentation.internal.di.components.DownloadComponent;
 import com.rowland.xmlparser.presentation.view.fragment.ABaseFragment;
 
@@ -34,6 +38,9 @@ public class DownloadDetailsFragment extends ABaseFragment implements IDownloadD
     @Inject
     DownloadDetailsPresenter downloadDetailsPresenter;
 
+    @Nullable
+    @Bind(R.id.tb_download)
+    Toolbar mToolbar;
     @Bind(R.id.iv_cover)
     ImageView iv_cover;
     @Bind(R.id.tv_value)
@@ -147,6 +154,14 @@ public class DownloadDetailsFragment extends ABaseFragment implements IDownloadD
         if (this.downloadDetailsPresenter != null) {
             this.downloadDetailsPresenter.initialize();
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // Set the ToolBar
+        ((DownloadDetailsActivity) getActivity()).setToolbar(mToolbar, true, true, 0);
     }
 
     @OnClick(R.id.bt_retry)
