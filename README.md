@@ -1,7 +1,7 @@
 # XMLParserExample
 
 ### Status
-[![Build Status](https://travis-ci.org/RowlandOti/XMLParserExample.svg?branch=master)](https://travis-ci.org/RowlandOti/XMLParserExample)
+[![Build Status](https://travis-ci.org/RowlandOti/XmlParserExample.svg?branch=master)](https://travis-ci.org/RowlandOti/XmlParserExample)
 
 
 An XML Parser example app
